@@ -98,17 +98,18 @@ export const redeemParticipationBidV3 = async ({
   const desiredEdition = masterEdition.data.supply.add(new BN(1));
   const editionMarkerPDA = await EditionMarker.getPDA(originalMint, desiredEdition);
 
+  const { account, createTokenAccountTx, closeTokenAccountTx } = await createWrappedAccountTxs(
+    connection,
+    bidder,
+    fixedPrice.toNumber(),
+  );
+
   let tokenPaymentAccount: PublicKey;
   if (auctionTokenMint === NATIVE_MINT.toBase58()) {
-    const { account, createTokenAccountTx, closeTokenAccountTx } = await createWrappedAccountTxs(
-      connection,
-      bidder,
-      fixedPrice.toNumber(),
-    );
+
     tokenPaymentAccount = account.publicKey;
     txInitBatch.addTransaction(createTokenAccountTx);
     txInitBatch.addSigner(account);
-    txMainBatch.addAfterTransaction(closeTokenAccountTx);
   } else {
     // TODO: find out what will happen if currency is not WSOL
     tokenPaymentAccount = await Token.getAssociatedTokenAddress(
@@ -127,6 +128,9 @@ export const redeemParticipationBidV3 = async ({
   txMainBatch.addTransaction(createApproveTx);
   txMainBatch.addAfterTransaction(createRevokeTx);
   txMainBatch.addSigner(authority);
+
+  txMainBatch.addAfterTransaction(closeTokenAccountTx);
+
 
   const redeemParticipationBidV3Tx = new RedeemParticipationBidV3(
     { feePayer: bidder },
