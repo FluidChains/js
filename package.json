@@ -1,6 +1,6 @@
 {
   "packageManager": "yarn@3.1.1",
-  "name": "@metaplex/js",
+  "name": "@fluidchains/metaplex-js",
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
@@ -12,7 +12,7 @@
     "/lib",
     "/src"
   ],
-  "version": "4.12.0",
+  "version": "4.12.1",
   "license": "MIT",
   "description": "Metaplex JavaScript API",
   "keywords": [
@@ -24,7 +24,7 @@
   "author": "Metaplex Maintainers <contact@metaplex.com>",
   "homepage": "https://metaplex.com",
   "repository": {
-    "url": "https://github.com/metaplex/js.git"
+    "url": "https://github.com/fluidchains/js.git"
   },
   "scripts": {
     "doc": "typedoc",
